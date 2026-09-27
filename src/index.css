@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: #141722;
+    color: #e4e4e7;
+  }
+
+  code, pre, .font-mono {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+}
+
+/* Transmutation spark and pulse effects */
+@keyframes alchemyPulse {
+  0%, 100% {
+    opacity: 0.28;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(1.02);
+  }
+}
+
+.animate-alchemy-pulse {
+  animation: alchemyPulse 8s ease-in-out infinite;
+}
+
+/* Custom subtle alchemy glow */
+.alchemy-glow {
+  filter: drop-shadow(0 0 16px rgba(239, 68, 68, 0.25)) drop-shadow(0 0 28px rgba(6, 182, 212, 0.15));
+}

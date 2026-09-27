@@ -1,5 +1,5 @@
 {
-  "name": "my-react-app",
+  "name": "sid-portfolio",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -12,6 +12,7 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "lucide-react": "^1.48.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
