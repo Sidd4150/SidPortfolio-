@@ -1,58 +1,52 @@
-# Sid Shakya — Personal Portfolio & Engineering Showcase
+# Sid Shakya — Portfolio
 
-A modern, high-performance portfolio website built with **React 19**, **Vite**, and **Tailwind CSS v4**, showcasing full-stack systems, machine learning applications, and backend engineering projects.
+Personal portfolio built with React 19, Vite, Tailwind CSS v4, and Lucide icons. Includes selected projects, engineering experience, education, skills, and direct contact links.
 
-## 🚀 Live Site
-- **URL**: [https://sidd4150.github.io/SidPortfolio-/](https://sidd4150.github.io/SidPortfolio-/)
+## Development
 
-## 🛠 Tech Stack
-- **Framework**: [React 19](https://react.dev/) + [Vite](https://vite.dev/)
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
-- **Icons**: [Lucide React](https://lucide.dev/)
-- **Deployment**: GitHub Pages (`gh-pages`)
-
-## 📂 Project Structure
-```text
-├── public/                 # Static assets & project preview screenshots
-│   ├── OPTCG.png           # One Piece TCG Deck Builder preview
-│   └── Rent_img.png        # SF Rent & ROI Predictor preview
-├── src/
-│   ├── components/
-│   │   ├── Navbar.jsx      # Glassmorphic header with navigation & status badge
-│   │   ├── Hero.jsx        # Value proposition, copy-email action & tech stack
-│   │   ├── About.jsx       # Engineering focus pillars & bio
-│   │   ├── Skills.jsx      # Categorized technical skills & tools
-│   │   ├── Projects.jsx    # Filterable project showcase with live links
-│   │   ├── Contact.jsx     # Direct email copy & quick message drafter
-│   │   ├── Footer.jsx      # Copyright & back-to-top navigation
-│   │   └── GithubIcon.jsx  # Reusable GitHub SVG icon
-│   ├── data/
-│   │   └── portfolioData.js # Single source of truth for projects, skills & bio
-│   ├── App.jsx             # Root layout
-│   ├── index.css           # Tailwind CSS directives & custom grid styles
-│   └── main.jsx            # Entry point
-├── index.html              # HTML shell with Google Fonts & metadata
-└── vite.config.js          # Vite build config with base path for GitHub Pages
+```sh
+npm install
+npm run dev
 ```
 
-## 💻 Local Development
+## Validation
 
-1. Clone and install dependencies:
-   ```bash
-   npm install
-   ```
+```sh
+npm run lint
+npm run build
+```
 
-2. Run the Vite development server:
-   ```bash
-   npm run dev
-   ```
+`npm run preview` serves the production build locally. The Vite base path supports GitHub Pages hosting at `/SidPortfolio-/`.
 
-3. Build for production:
-   ```bash
-   npm run build
-   ```
+## Content and styling
 
-4. Deploy to GitHub Pages:
-   ```bash
-   npm run deploy
-   ```
+- `src/data/portfolioData.js`: personal details, project links, work history, education, and skills.
+- `src/App.jsx`: page layout, mobile navigation, expandable engineering details, and copy-email action.
+- `src/index.css`: responsive layout, visual styles, focus indicators, and reduced-motion support.
+- `public/alfv-site.webp`: captured ALFV website background for the featured project.
+- `public/`: project screenshots and favicon assets.
+- `index.html`: page title and search/social metadata.
+
+## Useful next additions
+
+- Add a current résumé PDF and a visible download link.
+- Link OpenSupplyHub directly to contributed pull requests rather than the organization homepage.
+- Add short case studies explaining project challenges, your decisions, and measured outcomes.
+- Add a dedicated social preview image and custom domain when ready.
+
+## Deployment
+
+```sh
+npm run deploy
+```
+
+This builds and publishes the `dist` directory to the `gh-pages` branch.
+
+In the repository’s **Settings → Pages**, select **Deploy from a branch**, choose **gh-pages**, and choose **/(root)**. Serving `main` directly will serve the Vite source rather than the production build.
+
+The build uses `/SidPortfolio-/` for GitHub Pages and `/` when Vercel sets `VERCEL=1`. Commit and push source changes separately to preserve them on GitHub; the deployment command publishes only the compiled site.
+
+
+## Vercel
+
+Run `npx vercel --prod` from this directory. Vercel detects Vite, runs `npm run build`, and serves `dist`. The Vite config uses root asset paths on Vercel while preserving GitHub Pages deployment support.

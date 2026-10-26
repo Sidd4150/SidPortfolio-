@@ -1,486 +1,137 @@
-import { useState } from "react";
-import { ArrowUpRight, Mail, Check, Terminal, Layers, Database, Cpu, ExternalLink, GraduationCap, ChevronDown } from "lucide-react";
-import GithubIcon from "./components/GithubIcon";
-import LinkedinIcon from "./components/LinkedinIcon";
-import TransmutationCircle from "./components/TransmutationCircle";
-import { personalInfo, education, experience, projects, technicalSkills } from "./data/portfolioData";
+import { useEffect, useRef, useState } from 'react';
+import { ArrowUpRight, ArrowDown, ArrowRight, Check, Copy, MapPin, Menu, X } from 'lucide-react';
+import ChatIntro from './components/ChatIntro';
+import GithubIcon from './components/GithubIcon';
+import LinkedinIcon from './components/LinkedinIcon';
+import { personalInfo, education, experience, projects, technicalSkills } from './data/portfolioData';
+
+const navigation = [['work', 'Work'], ['experience', 'Experience'], ['about', 'About'], ['contact', 'Contact']];
+
+function ProjectLinks({ project }) {
+  return <div className="project-links">
+    {project.demo && <a href={project.demo} target="_blank" rel="noopener noreferrer">Visit site <ArrowUpRight size={16} /></a>}
+    {project.github && <a href={project.github} target="_blank" rel="noopener noreferrer"><GithubIcon className="icon" /> {project.id === 'opensupplyhub' ? 'Organization' : 'Source code'} <ArrowUpRight size={14} /></a>}
+  </div>;
+}
+
+function SectionHeading({ number, label, title, children }) {
+  return <div className="section-heading"><div><p className="eyebrow">{number} / {label}</p><h2>{title}</h2></div>{children && <p className="section-intro">{children}</p>}</div>;
+}
 
 export default function App() {
-  const [copied, setCopied] = useState(false);
-
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText(personalInfo.email);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2200);
+  const [entered, setEntered] = useState(() => Boolean(window.location.hash));
+  const shouldFocusPortfolio = useRef(false);
+  const enterPortfolio = () => {
+    shouldFocusPortfolio.current = true;
+    setEntered(true);
   };
-
-  const getCustomProjectGraphic = (id) => {
-    if (id === "alfv-collections") {
-      return (
-        <div className="w-full h-52 bg-[#141722]/80 flex flex-col items-center justify-center p-6 relative overflow-hidden border-b border-zinc-800/80">
-          <div className="w-12 h-12 rounded-xl bg-zinc-800/80 border border-zinc-700/60 flex items-center justify-center text-zinc-300 mb-2 relative z-10 group-hover:scale-110 transition-transform">
-            <Layers className="w-6 h-6" />
-          </div>
-          <span className="font-mono text-sm text-zinc-100 font-semibold tracking-wider relative z-10">
-            ACTION LEGENDS FIGURE VAULT
-          </span>
-          <span className="text-xs text-zinc-400 font-mono relative z-10 mt-1">
-            500+ Collectibles · 10,000+ Sales Evaluated · Live Platform
-          </span>
-        </div>
-      );
+  useEffect(() => {
+    if (entered && shouldFocusPortfolio.current) {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      document.getElementById('hero-title')?.focus({ preventScroll: true });
+      shouldFocusPortfolio.current = false;
     }
-    if (id === "opensupplyhub") {
-      return (
-        <div className="w-full h-52 bg-[#141722]/80 flex flex-col items-center justify-center p-6 relative overflow-hidden border-b border-zinc-800/80">
-          <div className="w-12 h-12 rounded-xl bg-zinc-800/80 border border-zinc-700/60 flex items-center justify-center text-zinc-300 mb-2 relative z-10 group-hover:scale-110 transition-transform">
-            <Cpu className="w-6 h-6" />
-          </div>
-          <span className="font-mono text-sm text-zinc-100 font-semibold tracking-wider relative z-10">
-            OPEN SUPPLY HUB
-          </span>
-          <span className="text-xs text-zinc-400 font-mono relative z-10 mt-1">
-            Global Supply Chain Transparency · Open Source
-          </span>
-        </div>
-      );
+  }, [entered]);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [headerVisible, setHeaderVisible] = useState(false);
+  useEffect(() => {
+    const updateHeader = () => {
+      const visible = window.scrollY > 120;
+      setHeaderVisible(visible);
+      if (!visible) setMenuOpen(false);
+    };
+    updateHeader();
+    window.addEventListener('scroll', updateHeader, { passive: true });
+    return () => window.removeEventListener('scroll', updateHeader);
+  }, []);
+  const [copyStatus, setCopyStatus] = useState('');
+  const copyTimer = useRef(null);
+  useEffect(() => () => clearTimeout(copyTimer.current), []);
+  const copyEmail = async () => {
+    clearTimeout(copyTimer.current);
+    try {
+      await navigator.clipboard.writeText(personalInfo.email);
+      setCopyStatus('Email copied');
+    } catch {
+      setCopyStatus('Copy unavailable. Use the email link to get in touch.');
     }
-    return (
-      <div className="w-full h-52 bg-[#141722]/80 flex flex-col items-center justify-center p-6 relative overflow-hidden border-b border-zinc-800/80">
-        <div className="w-12 h-12 rounded-xl bg-zinc-800/80 border border-zinc-700/60 flex items-center justify-center text-zinc-300 mb-2 relative z-10 group-hover:scale-110 transition-transform">
-          <Terminal className="w-6 h-6" />
-        </div>
-        <span className="font-mono text-sm text-zinc-100 font-semibold tracking-wider relative z-10">
-          CONCURRENT INVERTED INDEX
-        </span>
-        <span className="text-xs text-zinc-400 font-mono relative z-10 mt-1">
-          Go Search Engine · SQLite Persistence
-        </span>
-      </div>
-    );
+    copyTimer.current = setTimeout(() => setCopyStatus(''), 3500);
   };
+  const featured = projects[0];
 
-  return (
-    <div className="min-h-screen bg-[#141722] text-zinc-200 antialiased selection:bg-red-600/30 selection:text-red-200 relative overflow-x-hidden">
-      <div className="relative z-10">
-        {/* =========================================
-            HERO / INTRO SECTION (Circle Stays Here at Top)
-           ========================================= */}
-        <section className="min-h-[92vh] sm:min-h-screen flex flex-col justify-center items-center text-center px-6 relative overflow-hidden">
-          {/* Subtle Ambient Alchemical Light Glows in Hero */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[550px] bg-red-950/25 blur-[160px] rounded-full pointer-events-none z-0" />
-          <div className="absolute top-1/3 right-1/4 w-[450px] h-[450px] bg-cyan-950/15 blur-[160px] rounded-full pointer-events-none z-0" />
-
-          {/* Transmutation Circle rotating independently in the background of the intro */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0 opacity-45 sm:opacity-60 animate-alchemy-pulse">
-            <TransmutationCircle
-              bgColor="#141722"
-              className="w-[540px] h-[540px] sm:w-[760px] sm:h-[760px] lg:w-[920px] lg:h-[920px]"
-            />
-          </div>
-          <div className="max-w-3xl mx-auto space-y-6 relative z-10 my-auto">
-            {/* Name & Title */}
-            <div className="space-y-2">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white leading-tight">
-                {personalInfo.name}
-              </h1>
-              <p className="text-base sm:text-lg font-mono text-zinc-400">
-                {personalInfo.title} · {personalInfo.location}
-              </p>
-            </div>
-
-            {/* Bio */}
-            <p className="text-base sm:text-lg text-zinc-300 leading-relaxed max-w-2xl mx-auto font-normal">
-              {personalInfo.bio}
-            </p>
-
-            {/* Social Actions / Links */}
-            <div className="flex flex-wrap items-center justify-center gap-3.5 pt-2">
-              <a
-                href={personalInfo.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-zinc-800/80 hover:bg-zinc-700/80 text-zinc-200 hover:text-white border border-zinc-700/80 hover:border-zinc-600 text-sm font-medium transition-all shadow-sm"
-              >
-                <GithubIcon className="w-4 h-4 text-zinc-400" />
-                <span>GitHub</span>
-              </a>
-
-              <a
-                href={personalInfo.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-zinc-800/80 hover:bg-zinc-700/80 text-zinc-200 hover:text-white border border-zinc-700/80 hover:border-zinc-600 text-sm font-medium transition-all shadow-sm"
-              >
-                <LinkedinIcon className="w-4 h-4 text-zinc-400" />
-                <span>LinkedIn</span>
-              </a>
-
-              <button
-                onClick={handleCopyEmail}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-zinc-800/80 hover:bg-zinc-700/80 text-zinc-200 hover:text-white border border-zinc-700/80 hover:border-zinc-600 text-sm font-medium transition-all shadow-sm cursor-pointer"
-              >
-                {copied ? (
-                  <>
-                    <Check className="w-4 h-4 text-emerald-400" />
-                    <span className="text-emerald-400 font-mono">Email Copied!</span>
-                  </>
-                ) : (
-                  <>
-                    <Mail className="w-4 h-4 text-zinc-400" />
-                    <span>{personalInfo.email}</span>
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
-
-          {/* Scroll Down Prompt */}
-          <div className="pb-8 pt-4 flex flex-col items-center gap-1.5 text-xs font-mono text-zinc-500 animate-bounce">
-            <span>Scroll to explore projects & experience</span>
-            <ChevronDown className="w-4 h-4 text-zinc-400" />
-          </div>
-        </section>
-
-        {/* =========================================
-            FEATURED PROJECTS (Detailed Cards Grid)
-           ========================================= */}
-        <section className="py-24 max-w-6xl mx-auto px-6 sm:px-8 border-t border-zinc-800/60">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-14">
-            <div>
-              <div className="inline-flex items-center gap-2 text-xs font-mono font-medium text-zinc-400 uppercase tracking-widest mb-2">
-                <span>// PORTFOLIO</span>
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-                Featured Projects
-              </h2>
-            </div>
-            <p className="text-xs sm:text-sm font-mono text-zinc-400 max-w-md">
-              Full-stack production platforms, predictive ML engines, and open-source contributions.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
-            {projects.map((project) => {
-              const imageSrc = project.image
-                ? `${import.meta.env.BASE_URL}${project.image}`
-                : null;
-
-              return (
-                <div
-                  key={project.id}
-                  className="bg-[#1a1e2e] border border-zinc-800/90 hover:border-zinc-700 rounded-3xl overflow-hidden flex flex-col justify-between transition-all duration-300 group hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-black/50"
-                >
-                  <div>
-                    {/* Visual Banner or Screenshot */}
-                    {imageSrc ? (
-                      <div className="w-full h-52 bg-zinc-950 overflow-hidden relative border-b border-zinc-800/80">
-                        <img
-                          src={imageSrc}
-                          alt={project.title}
-                          className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
-                          loading="lazy"
-                        />
-                      </div>
-                    ) : (
-                      getCustomProjectGraphic(project.id)
-                    )}
-
-                    {/* Detailed Content */}
-                    <div className="p-7 sm:p-8 space-y-4">
-                      {/* Header Badge & Category */}
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="text-[11px] font-mono font-medium text-zinc-300 bg-zinc-900 px-2.5 py-1 rounded-md border border-zinc-800 uppercase tracking-wider">
-                          {project.category}
-                        </span>
-                        <span className="text-xs font-mono text-zinc-500">
-                          {project.tag}
-                        </span>
-                      </div>
-
-                      {/* Title & Subtitle */}
-                      <div>
-                        <h3 className="text-xl sm:text-2xl font-bold text-zinc-100 group-hover:text-white transition-colors">
-                          {project.title}
-                        </h3>
-                        {project.subtitle && (
-                          <div className="text-xs font-mono text-zinc-400 mt-0.5">
-                            {project.subtitle}
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Summary */}
-                      <p className="text-sm text-zinc-300 leading-relaxed font-normal">
-                        {project.description}
-                      </p>
-
-                      {/* Key Highlights */}
-                      <div className="space-y-2 pt-2 border-t border-zinc-800/60">
-                        <div className="text-[11px] font-mono text-zinc-500 uppercase tracking-wider">
-                          Key Technical Highlights:
-                        </div>
-                        <ul className="space-y-1.5 text-xs text-zinc-400">
-                          {project.highlights.map((highlight, hIdx) => (
-                            <li key={hIdx} className="flex items-start gap-2">
-                              <span className="text-indigo-400 font-bold shrink-0 mt-0.5">•</span>
-                              <span>{highlight}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      {/* Tech Badges */}
-                      <div className="flex flex-wrap gap-1.5 pt-2">
-                        {project.tech.map((tech, i) => (
-                          <span
-                            key={i}
-                            className="px-2.5 py-1 rounded-md text-xs font-mono bg-zinc-800/70 text-zinc-300 border border-zinc-700/60 group-hover:border-zinc-600/60"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Action Links */}
-                  <div className="px-7 pb-7 sm:px-8 sm:pb-8 pt-0 flex flex-wrap items-center gap-3">
-                    {project.demo && (
-                      <a
-                        href={project.demo}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-zinc-100 hover:bg-white text-zinc-950 text-xs font-semibold tracking-wide transition-all shadow-md shadow-white/5"
-                      >
-                        <span>Live Site</span>
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </a>
-                    )}
-
-                    {project.github && (
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-zinc-800/80 hover:bg-zinc-750 text-zinc-200 hover:text-white border border-zinc-700/80 hover:border-zinc-600 text-xs font-medium transition-all"
-                      >
-                        <GithubIcon className="w-3.5 h-3.5 text-zinc-400" />
-                        <span>Source Code</span>
-                      </a>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* =========================================
-            EXPERIENCE SECTION (From Resume)
-           ========================================= */}
-        <section className="py-24 max-w-6xl mx-auto px-6 sm:px-8 border-t border-zinc-800/60">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-14">
-            <div>
-              <div className="inline-flex items-center gap-2 text-xs font-mono font-medium text-zinc-400 uppercase tracking-widest mb-2">
-                <span>// WORK HISTORY</span>
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-                Experience
-              </h2>
-            </div>
-            <p className="text-xs sm:text-sm font-mono text-zinc-400 max-w-md">
-              Software engineering roles spanning full-stack marketplace systems, geospatial pipelines, and AI services.
-            </p>
-          </div>
-
-          <div className="space-y-8">
-            {experience.map((exp, idx) => (
-              <div
-                key={idx}
-                className="bg-[#1a1e2e] border border-zinc-800/90 hover:border-zinc-700 rounded-3xl p-7 sm:p-8 space-y-4 transition-all duration-300 group hover:-translate-y-1"
-              >
-                {/* Header */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-zinc-800/60">
-                  <div>
-                    <h3 className="text-xl sm:text-2xl font-bold text-zinc-100 group-hover:text-white transition-colors">
-                      {exp.company}
-                    </h3>
-                    <div className="text-sm font-semibold text-zinc-300 mt-0.5">
-                      {exp.role} · <span className="text-zinc-500 font-normal">{exp.type}</span>
-                    </div>
-                  </div>
-                  <div className="text-xs font-mono text-zinc-400 sm:text-right">
-                    <div className="text-zinc-300 font-medium">{exp.period}</div>
-                    <div className="text-zinc-500">{exp.location}</div>
-                  </div>
-                </div>
-
-                {/* Bullets directly from Resume */}
-                <ul className="space-y-2 text-sm text-zinc-300 leading-relaxed pt-1">
-                  {exp.highlights.map((item, hIdx) => (
-                    <li key={hIdx} className="flex items-start gap-2.5">
-                      <span className="text-zinc-500 font-bold shrink-0 mt-1">•</span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                {/* Tech Badges */}
-                <div className="flex flex-wrap gap-1.5 pt-3 border-t border-zinc-800/50">
-                  {exp.tech.map((t, tIdx) => (
-                    <span
-                      key={tIdx}
-                      className="px-2.5 py-1 rounded-md text-xs font-mono bg-zinc-800/60 text-zinc-400 border border-zinc-700/50"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* =========================================
-            EDUCATION SECTION (From Resume)
-           ========================================= */}
-        <section className="py-24 max-w-6xl mx-auto px-6 sm:px-8 border-t border-zinc-800/60">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
-            <div>
-              <div className="inline-flex items-center gap-2 text-xs font-mono font-medium text-zinc-400 uppercase tracking-widest mb-2">
-                <span>// ACADEMICS</span>
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-                Education
-              </h2>
-            </div>
-          </div>
-
-          <div className="bg-[#1a1e2e] border border-zinc-800/90 rounded-3xl p-7 sm:p-8 space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pb-3 border-b border-zinc-800/60">
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-xl bg-zinc-800 border border-zinc-700/80 text-zinc-300">
-                  <GraduationCap className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-white">
-                    {education.institution}
-                  </h3>
-                  <div className="text-sm text-zinc-400 font-medium">
-                    {education.degree} · <span className="text-emerald-400 font-mono font-semibold">GPA: {education.gpa}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="text-xs font-mono text-zinc-400 sm:text-right">
-                <div className="text-zinc-300">{education.graduation}</div>
-                <div className="text-zinc-500">{education.location}</div>
-              </div>
-            </div>
-
-            <div className="pt-2">
-              <span className="text-xs font-mono text-zinc-500 uppercase tracking-wider block mb-2">
-                Relevant Coursework:
-              </span>
-              <div className="flex flex-wrap gap-2">
-                {education.coursework.map((course, idx) => (
-                  <span
-                    key={idx}
-                    className="px-3 py-1 rounded-lg text-xs font-mono bg-zinc-800/70 text-zinc-300 border border-zinc-700/60"
-                  >
-                    {course}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* =========================================
-            TECHNICAL SKILLS (From Resume)
-           ========================================= */}
-        <section className="py-24 max-w-6xl mx-auto px-6 sm:px-8 border-t border-zinc-800/60">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-14">
-            <div>
-              <div className="inline-flex items-center gap-2 text-xs font-mono font-medium text-zinc-400 uppercase tracking-widest mb-2">
-                <span>// TOOLKIT</span>
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-                Technical Skills
-              </h2>
-            </div>
-            <p className="text-xs sm:text-sm font-mono text-zinc-400 max-w-md">
-              Technologies, programming languages, and infrastructure utilized in production.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {technicalSkills.map((group, idx) => (
-              <div
-                key={idx}
-                className="bg-[#1a1e2e] border border-zinc-800/90 hover:border-zinc-700 rounded-2xl p-6 space-y-4 transition-all"
-              >
-                <h3 className="font-mono text-sm font-bold text-zinc-100 uppercase tracking-wider pb-2 border-b border-zinc-800/60">
-                  {group.category}
-                </h3>
-
-                <div className="flex flex-wrap gap-1.5 pt-1">
-                  {group.skills.map((skill, sIdx) => (
-                    <span
-                      key={sIdx}
-                      className="px-2.5 py-1 rounded text-xs font-mono bg-zinc-800/70 text-zinc-300 border border-zinc-700/60"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* =========================================
-            CONTACT / GET IN TOUCH SECTION
-           ========================================= */}
-        <section className="py-24 max-w-6xl mx-auto px-6 sm:px-8 border-t border-zinc-800/60">
-          <div className="bg-[#1a1e2e] border border-zinc-800/90 rounded-3xl p-8 sm:p-12 text-center max-w-2xl mx-auto space-y-6">
-            <div className="space-y-2">
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
-                Get In Touch
-              </h2>
-              <p className="text-sm sm:text-base text-zinc-400 max-w-lg mx-auto">
-                Open to software engineering opportunities, collaborations, and discussions. Feel free to reach out directly.
-              </p>
-            </div>
-
-            <div className="flex flex-wrap items-center justify-center gap-3.5 pt-2">
-              <a
-                href={`mailto:${personalInfo.email}`}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-zinc-100 hover:bg-white text-zinc-950 font-semibold text-sm transition-all shadow-md shadow-white/5"
-              >
-                <Mail className="w-4 h-4" />
-                <span>{personalInfo.email}</span>
-              </a>
-
-              <a
-                href={personalInfo.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-zinc-800/80 hover:bg-zinc-700/80 text-zinc-200 hover:text-white border border-zinc-700/80 hover:border-zinc-600 font-medium text-sm transition-all"
-              >
-                <LinkedinIcon className="w-4 h-4 text-zinc-400" />
-                <span>LinkedIn</span>
-              </a>
-            </div>
-
-            <div className="pt-8 border-t border-zinc-800/60 text-xs font-mono text-zinc-500 flex flex-col sm:flex-row items-center justify-between gap-3">
-              <span>© {new Date().getFullYear()} {personalInfo.name}</span>
-              <span>San Francisco, CA</span>
-            </div>
-          </div>
-        </section>
+  return <>
+    {!entered && <ChatIntro onEnter={enterPortfolio} />}
+    <div className="portfolio-page" hidden={!entered}>
+    <a className="skip-link" href="#main">Skip to content</a>
+    <header className={`site-header${headerVisible ? ' is-visible' : ''}`}>
+      <div className="container header-inner">
+        <a className="wordmark" href="#top" aria-label="Sid Shakya home">sid<span>.</span></a>
+        <nav id="mobile-navigation" className={menuOpen ? 'navigation is-open' : 'navigation'} aria-label="Main navigation">
+          {navigation.map(([id, label]) => <a href={`#${id}`} key={id} onClick={() => setMenuOpen(false)}>{label}</a>)}
+        </nav>
+        <a className="header-contact" href={`mailto:${personalInfo.email}`}>Let’s talk <ArrowUpRight size={16} /></a>
+        <button className="menu-toggle" type="button" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-controls="mobile-navigation" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'}>{menuOpen ? <X /> : <Menu />}</button>
       </div>
+    </header>
+    <main id="main">
+      <section id="top" className="hero container" aria-labelledby="hero-title">
+        <div className="hero-topline">
+          <span className="hero-role">Software engineer</span>
+          <span className="hero-location"><MapPin size={13} /> San Francisco, CA</span>
+          <a href={`mailto:${personalInfo.email}`}>Say hello <ArrowUpRight size={15} /></a>
+        </div>
+        <h1 id="hero-title" className="hero-title" tabIndex={-1}><span>Sid</span> <span>Shakya<span className="name-period">.</span></span></h1>
+        <div className="hero-introduction">
+          <div className="hero-statement">
+            <p className="hero-lead">I build software for work.<br />And for the things I’m into.</p>
+            <p className="hero-description">Backend systems, full-stack apps, and the occasional trading card tool. Currently building marketplace software at Himal Design and a collection tracker for fellow action figure collectors.</p>
+            <div className="hero-actions"><a className="button button-primary" href="#work">Take a look at my work <ArrowDown size={17} /></a><a className="hero-email-link" href={`mailto:${personalInfo.email}`}>Get in touch <ArrowUpRight size={16} /></a></div>
+          </div>
+          <div className="hero-current">
+            <span className="hero-current-label">Currently building</span>
+            <a className="hero-current-project" href={featured.demo} target="_blank" rel="noopener noreferrer">
+              <div className="hero-project-preview"><img src={`${import.meta.env.BASE_URL}${featured.image}`} alt="ALFV Collections catalog" fetchPriority="high" /><span className="hero-project-arrow"><ArrowUpRight size={21} /></span></div>
+              <div className="hero-project-caption"><span>ALFV Collections</span><span>Side project, real collectors.</span></div>
+            </a>
+          </div>
+        </div>
+        <div className="hero-footer">
+          <div className="hero-socials"><a href={personalInfo.github} target="_blank" rel="noopener noreferrer"><GithubIcon className="icon" /> GitHub <ArrowUpRight size={13} /></a><a href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer"><LinkedinIcon className="icon" /> LinkedIn <ArrowUpRight size={13} /></a></div>
+          <a className="hero-scroll" href="#work"><span>Scroll for the work</span><ArrowDown size={15} /></a>
+        </div>
+      </section>
+
+      <section id="work" className="section container">
+        <SectionHeading number="01" label="Selected work" title="Selected projects.">From a live collector platform to search systems. A selection of products and engineering problems I’ve worked on.</SectionHeading>
+        <article className="featured-project">
+          <div className="featured-visual" aria-label="ALFV Collections project metrics">
+            <img className="featured-background" src={`${import.meta.env.BASE_URL}${featured.image}`} alt="" loading="lazy" />
+            <div className="visual-top"><span className="mini-brand">A<span>/</span>V</span><span className="live-badge"><span className="status-dot" /> In production</span></div>
+            <div className="vault-title"><span>THE COLLECTOR’S TOOLKIT</span><h3>Your collection.<br />A clearer picture.</h3><p>Action Legends Figure Vault</p></div>
+            <div className="metrics"><div><strong>50+</strong><span>registered collectors</span></div><div><strong>500+</strong><span>collectibles tracked</span></div><div><strong>10k+</strong><span>sales evaluated</span></div></div>
+          </div>
+          <div className="featured-copy"><p className="eyebrow">Featured project / Full stack</p><h3>{featured.title}</h3><p>A live platform for collectors to manage their vaults, organize wishlists, and understand what their collections are worth.</p><p className="project-detail">Built a market valuation engine that weighs recency and penalizes outliers across 10,000+ scraped sales.</p><div className="tags">{featured.tech.map(t => <span key={t}>{t}</span>)}</div><ProjectLinks project={featured} /></div>
+        </article>
+        <div className="project-grid">{projects.slice(1).map((project, index) => <article className={`project-card project-${project.id}`} key={project.id}>
+          {project.image ? <div className="project-image"><img src={`${import.meta.env.BASE_URL}${project.image}`} alt={`${project.title} application interface`} loading="lazy" /></div> : <div className="project-type-visual" aria-hidden="true"><span>{project.id === 'opensupplyhub' ? '{ open source }' : '> search_index.go'}</span><span>{project.id === 'opensupplyhub' ? 'Better feedback. Fewer dead ends.' : 'Tokenize. Index. Retrieve.'}</span></div>}
+          <div className="project-body"><div className="project-meta"><span>{project.tag}</span><span>0{index + 2}</span></div><h3>{project.title}</h3><p>{project.summary}</p><div className="tags">{project.tech.slice(0, 4).map(t => <span key={t}>{t}</span>)}</div><details><summary>Engineering details</summary><ul>{project.highlights.map(item => <li key={item}>{item}</li>)}</ul></details><ProjectLinks project={project} /></div>
+        </article>)}</div>
+        <a className="text-link all-work" href={personalInfo.github} target="_blank" rel="noopener noreferrer">More experiments on GitHub <ArrowUpRight size={17} /></a>
+      </section>
+
+      <section id="experience" className="section container">
+        <SectionHeading number="02" label="Experience" title="Where I’ve worked.">Building with teams, shipping for real users, and making the systems behind the product work better.</SectionHeading>
+        <div className="timeline">{experience.map((job, index) => <article className="experience-row" key={job.company}><div className="experience-date"><span className={index === 0 ? 'timeline-dot current' : 'timeline-dot'} />{job.period}<span>{job.location}</span></div><div className="experience-content"><div className="job-heading"><div><h3>{job.company}</h3><p>{job.role}</p></div><span className="job-type">{job.type}</span></div><ul>{job.highlights.map(item => <li key={item}>{item}</li>)}</ul><div className="tags">{job.tech.map(t => <span key={t}>{t}</span>)}</div></div></article>)}</div>
+      </section>
+
+      <section id="about" className="section container">
+        <SectionHeading number="03" label="A little about me" title="A bit about me.">I’m drawn to the work behind the interface: how data moves, how services scale, and how a good tool makes someone’s day easier.</SectionHeading>
+        <div className="about-grid"><div className="about-copy"><h3>Software, systems,<br />and a few side projects.</h3><p>{personalInfo.bio}</p><p>My projects also reflect what I enjoy outside of work, from collectible figures to trading card games. Building tools for those communities keeps the work personal.</p><div className="education"><span className="eyebrow">Education</span><h4>{education.institution}</h4><p>{education.degree}</p><span>{education.graduation} · GPA {education.gpa}</span></div></div><div className="skills-list">{technicalSkills.map(group => <div className="skill-group" key={group.category}><h3>{group.category}</h3><p>{group.skills.join(' · ')}</p></div>)}</div></div>
+      </section>
+
+      <section id="contact" className="contact-section container"><p className="eyebrow"><span className="status-dot" /> Let’s connect</p><h2>Say hello<span>.</span></h2><div className="contact-bottom"><p>Open to software engineering opportunities<br />and interesting things to build together.</p><div className="email-actions"><a href={`mailto:${personalInfo.email}`}>{personalInfo.email} <ArrowUpRight size={23} /></a><button type="button" onClick={copyEmail} aria-label="Copy email address">{copyStatus === 'Email copied' ? <Check size={18} /> : <Copy size={18} />}</button></div></div><p className="copy-status" role="status">{copyStatus}</p></section>
+    </main>
+    <footer className="container footer"><span>© {new Date().getFullYear()} {personalInfo.name}</span><span>Made with care in San Francisco.</span><a href="#top">Back to top <ArrowRight size={14} className="back-arrow" /></a></footer>
     </div>
-  );
+  </>;
 }

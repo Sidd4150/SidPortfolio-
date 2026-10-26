@@ -83,7 +83,7 @@ export const projects = [
     tech: ["Next.js", "TypeScript", "PostgreSQL", "Prisma", "Supabase", "Tailwind CSS"],
     github: "https://github.com/Sidd4150/ALFV_collection",
     demo: "https://alfvcollections.com",
-    image: null,
+    image: "alfv-site.webp",
     highlights: [
       "Engineered live market valuation engine for 500+ collectibles across 10,000+ scraped sales using an asymmetric outlier-penalized recency algorithm",
       "Launched in production with 50+ registered collectors tracking portfolios and vaults",
