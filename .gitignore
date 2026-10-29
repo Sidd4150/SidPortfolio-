@@ -25,3 +25,7 @@ dist-ssr
 *.pem
 *.PEM
 .gitignore
+
+# Local learning project
+/react-next-practice/
+/reading-queue-practice/

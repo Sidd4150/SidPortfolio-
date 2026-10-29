@@ -34,6 +34,16 @@ npm run build
 - Add short case studies explaining project challenges, your decisions, and measured outcomes.
 - Add a dedicated social preview image and custom domain when ready.
 
+## Analytics
+
+Vercel Web Analytics is installed through `@vercel/analytics` and mounted once in `src/main.jsx`. This portfolio uses React with Vite, so it uses `@vercel/analytics/react`.
+
+1. Open the portfolio project in Vercel, select **Analytics**, and click **Enable**.
+2. Deploy the updated source through your existing Vercel Git integration.
+3. Visit the deployed site and check the Analytics dashboard for visitors and page views. If data does not appear, check content blockers.
+
+No tracking ID or environment variable is needed. Collection requires a Vercel deployment; the GitHub Pages build does not provide Vercel's analytics endpoint. See the [setup guide](https://vercel.com/docs/analytics/quickstart).
+
 ## Deployment
 
 ```sh
