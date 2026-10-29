@@ -49,6 +49,8 @@ export default function PortfolioChat({ active, sections }) {
   const copyTimer = useRef(null);
   const nextId = useRef(0);
   const pendingScroll = useRef(null);
+  const responseEnd = useRef(null);
+  const scrollGesture = useRef({ lastWheel: 0, revealedAt: 0, waiting: false });
   const nextSection = thread.filter(item => item.sectionIndex !== undefined).length;
   const hasNext = nextSection < sections.length;
   useEffect(() => () => { clearTimeout(timer.current); clearTimeout(copyTimer.current); }, []);
@@ -66,6 +68,46 @@ export default function PortfolioChat({ active, sections }) {
     pendingScroll.current = sectionIds[nextSection];
     setThread(current => current.some(item => item.sectionIndex === nextSection) ? current : [...current, { id: `section-${nextSection}`, sectionIndex: nextSection }]);
   }, [hasNext, nextSection, sending]);
+  useEffect(() => {
+    if (!active || !hasNext || sending) return;
+    let touchY = null;
+    const atResponseEnd = () => {
+      const dock = document.querySelector('.chat-dock');
+      const visibleBottom = dock?.getBoundingClientRect().top ?? window.innerHeight;
+      return responseEnd.current?.getBoundingClientRect().bottom <= visibleBottom + 24;
+    };
+    const revealOnScroll = () => {
+      const gesture = scrollGesture.current;
+      if (gesture.waiting || performance.now() - gesture.revealedAt < 900 || !atResponseEnd()) return;
+      gesture.waiting = true;
+      gesture.revealedAt = performance.now();
+      advance();
+    };
+    const handleWheel = event => {
+      if (event.ctrlKey || event.deltaY <= 0 || Math.abs(event.deltaX) > Math.abs(event.deltaY) || event.target.closest?.('.chat-dock, input, textarea, select')) return;
+      const now = performance.now();
+      // Require a fresh gesture after a reveal so trackpad momentum cannot skip sections.
+      if (now - scrollGesture.current.lastWheel > 180) scrollGesture.current.waiting = false;
+      scrollGesture.current.lastWheel = now;
+      revealOnScroll();
+    };
+    const handleTouchStart = event => {
+      touchY = event.touches.length === 1 ? event.touches[0].clientY : null;
+      scrollGesture.current.waiting = false;
+    };
+    const handleTouchMove = event => {
+      if (touchY === null || event.touches.length !== 1 || event.target.closest?.('.chat-dock, input, textarea, select')) return;
+      if (touchY - event.touches[0].clientY > 45) revealOnScroll();
+    };
+    window.addEventListener('wheel', handleWheel, { passive: true });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, [active, advance, hasNext, sending]);
   useEffect(() => {
     if (!active) return;
     const handleEnter = (event) => {
@@ -119,6 +161,7 @@ export default function PortfolioChat({ active, sections }) {
         <button className="copy-reply" onClick={() => copyReply(item)} aria-label={copied === item.id ? 'Reply copied' : 'Copy reply'}>{copied === item.id ? <Check size={14} /> : <Copy size={14} />}</button>
       </> : <><span className="sr-only">Finding that in my portfolio…</span><span className="intro-loading" aria-hidden="true"><i /><i /><i /></span></>}</div>
     </article>)}
+    <div ref={responseEnd} aria-hidden="true" />
     <div className="chat-dock">
       <div className="chat-dock-inner">
         <div className="chat-suggestions" aria-label="Suggested questions">{hasNext ? <button className="next-message-button" disabled={sending} onClick={advance}>{nextQuestions[nextSection]} <span>Enter ↵</span></button> : ['What have you built?', 'Where have you worked?', 'How can I contact you?'].map(question => <button key={question} disabled={sending} onClick={() => send(question)}>{question}</button>)}</div>
@@ -127,7 +170,7 @@ export default function PortfolioChat({ active, sections }) {
           <input id="followup-message" value={message} onChange={event => setMessage(event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && (event.nativeEvent.isComposing || event.repeat)) event.preventDefault(); }} placeholder={hasNext ? 'Press Enter for the next message, or ask a question…' : 'Ask about my projects, experience, or skills…'} autoComplete="off" maxLength={500} />
           <button type="submit" aria-label={message.trim() || !hasNext ? 'Send follow-up message' : 'Show next message'} disabled={(!message.trim() && !hasNext) || sending}><ArrowUp size={20} /></button>
         </form>
-        <p role="status">{hasNext ? `Press Enter to continue · ${nextSection} of ${sections.length} responses` : <>You’ve reached the end. Ask a question or <a href={`mailto:${personalInfo.email}`}>email me</a>.</>}</p>
+        <p role="status">{hasNext ? `Scroll down or press Enter to continue · ${nextSection} of ${sections.length} responses` : <>You’ve reached the end. Ask a question or <a href={`mailto:${personalInfo.email}`}>email me</a>.</>}</p>
       </div>
     </div>
   </>;

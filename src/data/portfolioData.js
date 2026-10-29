@@ -9,7 +9,7 @@ export const personalInfo = {
   email: "sidushakya@gmail.com",
   github: "https://github.com/Sidd4150",
   linkedin: "https://www.linkedin.com/in/siddhartha-shakya3004",
-  bio: "Software engineer based in San Francisco with experience building high-throughput APIs, geospatial ingestion pipelines, and full-stack web platforms. Passionate about distributed systems, database optimization, and machine learning."
+  bio: "I’m based in San Francisco. I like working on APIs and databases, then building an interface that makes them useful. Recently, I built a tool for my dad’s paper business to bring its listings, inventory, and orders into one place."
 };
 
 export const education = {
@@ -33,17 +33,19 @@ export const experience = [
     location: "Remote",
     period: "April 2026 – Present",
     type: "Contract",
-    description: "Architected and delivered a full-stack seller operations platform deployed on Vercel with Neon Postgres, consolidating listings, inventory, and active orders across Etsy, Amazon, and Faire.",
+    description: "Built an operations site for my dad’s paper business, bringing Etsy, Amazon, and Faire listings, inventory, and orders into one place.",
     highlights: [
-      "Architected and delivered a full-stack seller operations platform deployed on Vercel with Neon Postgres, consolidating listings, inventory, and active orders across Etsy, Amazon, and Faire.",
-      "Streamlined order fulfillment by eliminating manual lookups, significantly accelerating packaging and shipping workflows.",
-      "Designed scalable, normalized SQL schemas to seamlessly unify data models across three distinct marketplace integrations."
+      "Built an operations site for my dad’s paper business, bringing Etsy, Amazon, and Faire listings, inventory, and orders into one place.",
+      "Put order details in one view so packaging and shipping involve fewer manual lookups.",
+      "Designed the SQL tables to work with data from three marketplaces."
     ],
     tech: ["Next.js", "TypeScript", "Neon Postgres", "SQL", "Vercel", "REST APIs"]
   },
   {
     role: "Software Engineer Co-op",
     company: "SpotDrop",
+    presentation: "spotdrop-final-presentation.pdf",
+    presentationPreview: "spotdrop-presentation-preview.png",
     location: "San Francisco, CA",
     period: "August 2025 – December 2025",
     type: "Co-op",
@@ -96,7 +98,7 @@ export const projects = [
     subtitle: "Global Supply Chain Transparency",
     category: "Open-Source Contribution",
     tag: "Open Source",
-    summary: "Open-source frontend enhancements and regression testing for the global supply chain mapping platform.",
+    summary: "Fixed an issue where API errors weren’t shown in the interface, and added tests for it.",
     description: "Contributed to OpenSupplyHub, the open-source supply chain mapping engine. Fixed critical frontend defects that prevented REST API error messages from displaying to users and authored unit test suites to protect against regression.",
     tech: ["React", "React Testing Library", "JavaScript", "REST APIs", "Jest"],
     github: "https://github.com/opensupplyhub",
@@ -114,7 +116,7 @@ export const projects = [
     subtitle: "Machine Learning Real Estate Valuation",
     category: "Machine Learning & Full Stack",
     tag: "ML & Analytics",
-    summary: "Predictive ML application evaluating San Francisco real estate properties with Gradient Boosting and financial ROI modeling.",
+    summary: "Estimates San Francisco rents from rental data, then calculates cash flow, cap rate, and ROI scenarios.",
     description: "Trained on real San Francisco rental market data, this application utilizes a custom Gradient Boosting Regressor (GBR) to forecast fair rental prices across neighborhoods. Built-in financial models calculate capitalization rates, cash flow, and ROI scenarios for real estate investors in real time.",
     tech: ["Python", "Flask", "Scikit-Learn", "Pandas", "React", "Tailwind CSS", "Railway"],
     github: "https://github.com/Sidd4150/San-Francisco-rent-and-ROI-predictor",
@@ -150,7 +152,7 @@ export const projects = [
     subtitle: "Low-Latency Information Retrieval",
     category: "Systems & Algorithms",
     tag: "Systems",
-    summary: "Concurrent text search engine in GoLang featuring SQLite storage and inverted index querying.",
+    summary: "A search engine I built to learn how tokenization, indexing, and ranking work. Written in Go, with SQLite storage.",
     description: "Engineered from the ground up to understand core information retrieval algorithms. Implemented custom tokenization, stop-word elimination, TF-IDF ranking primitives, and inverted index lookups backed by SQLite persistence.",
     tech: ["Go", "SQLite", "Inverted Index", "Concurrency", "Goroutines"],
     github: "https://github.com/Sidd4150/search-engine",

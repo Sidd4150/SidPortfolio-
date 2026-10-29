@@ -46,12 +46,12 @@ export default function ChatIntro({ onEnter }) {
       {!sending ? <>
         <div className="intro-avatar" aria-hidden="true">s<span>.</span></div>
         <p className="intro-kicker">Software engineer · San Francisco</p>
-        <h1>Get to know <span>Sid.</span></h1>
-        <p className="intro-description">A little about me. A few things I’ve built.</p>
+        <h1>Hey, I’m <span>Sid.</span></h1>
+        <p className="intro-description">I write software, collect figures, and build tools for both.</p>
         <form className="intro-composer" onSubmit={sendMessage}>
           <label className="sr-only" htmlFor="intro-message">Message to open Sid’s portfolio</label>
           <input ref={input} id="intro-message" value={message} onPointerDown={() => { edited.current = true; }} onKeyDown={() => { edited.current = true; }} onBeforeInput={() => { edited.current = true; }} onChange={event => { edited.current = true; setMessage(event.target.value); }} autoComplete="off" spellCheck="false" placeholder="Show me Sid Shakya’s portfolio." />
-          <div className="intro-composer-bottom"><span>Projects, experience & a bit of personality</span><button type="submit" className="intro-send" aria-label="Send message and open portfolio"><ArrowUp size={20} /></button></div>
+          <div className="intro-composer-bottom"><span>Start with a hello.</span><button type="submit" className="intro-send" aria-label="Send message and open portfolio"><ArrowUp size={20} /></button></div>
         </form>
         <p className="intro-enter-hint">Press <kbd>Enter <CornerDownLeft size={11} /></kbd> to take a look</p>
       </> : <div className="intro-conversation" role="status"><div className="intro-sent-message">{message}</div><div className="intro-response"><div className="intro-avatar" aria-hidden="true">s<span>.</span></div><div><p>Here’s what I’ve been building.</p><span className="intro-loading" aria-hidden="true"><i /><i /><i /></span></div></div></div>}
