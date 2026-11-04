@@ -1,9 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowUpRight, ArrowDown, ArrowRight, Check, Copy, Menu, X } from 'lucide-react';
-import ChatIntro from './components/ChatIntro';
-import ConversationTurn from './components/ConversationTurn';
-import PortfolioChat from './components/PortfolioChat';
-import { introPrompt } from './data/chatData';
 import GithubIcon from './components/GithubIcon';
 import LinkedinIcon from './components/LinkedinIcon';
 import { personalInfo, education, experience, projects, technicalSkills } from './data/portfolioData';
@@ -22,21 +18,6 @@ function SectionHeading({ title, children }) {
 }
 
 export default function App() {
-  const [entered, setEntered] = useState(() => Boolean(window.location.hash));
-  const [openingMessage, setOpeningMessage] = useState(introPrompt);
-  const shouldFocusPortfolio = useRef(false);
-  const enterPortfolio = (message = introPrompt) => {
-    setOpeningMessage(message);
-    shouldFocusPortfolio.current = true;
-    setEntered(true);
-  };
-  useEffect(() => {
-    if (entered && shouldFocusPortfolio.current) {
-      window.scrollTo({ top: 0, behavior: 'instant' });
-      document.getElementById('hero-title')?.focus({ preventScroll: true });
-      shouldFocusPortfolio.current = false;
-    }
-  }, [entered]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [headerVisible, setHeaderVisible] = useState(false);
   useEffect(() => {
@@ -65,8 +46,7 @@ export default function App() {
   const featured = projects[0];
 
   return <>
-    {!entered && <ChatIntro onEnter={enterPortfolio} />}
-    <div className="portfolio-page" hidden={!entered}>
+    <div className="portfolio-page">
     <a className="skip-link" href="#main">Skip to content</a>
     <header className={`site-header${headerVisible ? ' is-visible' : ''}`}>
       <div className="container header-inner">
@@ -79,24 +59,24 @@ export default function App() {
       </div>
     </header>
     <main id="main">
-      <PortfolioChat active={entered} sections={[
-<section id="top" className="hero container" aria-labelledby="hero-title">
-        <ConversationTurn question={openingMessage} label="A quick introduction" />
-        <h1 id="hero-title" className="hero-title" tabIndex={-1}>Hey, I’m Sid<span>.</span></h1>
-        <div className="hero-chat-introduction">
-          <p>I’m a software engineer in San Francisco. I build backend systems, full-stack apps, and tools for the things I’m into.</p>
-          <p>Right now, I’m building marketplace software at <a href="#experience">Himal Design</a> and <a href={featured.demo} target="_blank" rel="noopener noreferrer">ALFV Collections</a>, a collection tracker for fellow action figure collectors.</p>
-          <p>Here’s a look at my projects, experience, and a little about me.</p>
+      <section id="top" className="hero container" aria-labelledby="hero-title">
+        <div className="hero-topline"><span>Software engineer</span><span>{personalInfo.location}</span></div>
+        <h1 id="hero-title" className="hero-title">Siddhartha<span>(Sid) Shakya.</span></h1>
+        <div className="hero-introduction">
+          <p className="hero-lead">I build web apps, backend services, and tools I use myself.</p>
+          <div className="hero-description">
+            <p>I’m a computer science graduate from the University of San Francisco. My work spans marketplace operations, event discovery, and a collection tracker used by 50+ collectors.</p>
+            <div className="hero-actions"><a className="button button-primary" href="#work">View projects <ArrowDown size={16} /></a><a className="button button-secondary" href={`mailto:${personalInfo.email}`}>Get in touch <ArrowUpRight size={16} /></a></div>
+          </div>
         </div>
         <div className="hero-footer">
           <div className="hero-socials"><a href={personalInfo.github} target="_blank" rel="noopener noreferrer"><GithubIcon className="icon" /> GitHub <ArrowUpRight size={13} /></a><a href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer"><LinkedinIcon className="icon" /> LinkedIn <ArrowUpRight size={13} /></a></div>
           <a className="hero-scroll" href="#work"><span>Scroll for the work</span><ArrowDown size={15} /></a>
         </div>
-      </section>,
+      </section>
 
       <section id="work" className="section container">
-        <ConversationTurn question="What have you built?" label="Projects & open source" />
-        <SectionHeading number="01" label="Selected work" title="Selected projects.">I collect figures and play One Piece TCG, so a couple of these started as tools I wanted to use myself.</SectionHeading>
+        <SectionHeading title="Selected projects.">I collect figures and play One Piece TCG, so a couple of these started as tools I wanted to use myself.</SectionHeading>
         <article className="featured-project">
           <div className="featured-visual" aria-label="ALFV Collections project metrics">
             <img className="featured-background" src={`${import.meta.env.BASE_URL}${featured.image}`} alt="" loading="lazy" />
@@ -111,25 +91,22 @@ export default function App() {
           <div className="project-body"><div className="project-meta"><span>{project.tag}</span></div><h3>{project.title}</h3><p>{project.summary}</p><div className="tags">{project.tech.slice(0, 4).map(t => <span key={t}>{t}</span>)}</div><details><summary>Engineering details</summary><ul>{project.highlights.map(item => <li key={item}>{item}</li>)}</ul></details><ProjectLinks project={project} /></div>
         </article>)}</div>
         <a className="text-link all-work" href={personalInfo.github} target="_blank" rel="noopener noreferrer">Other projects on GitHub <ArrowUpRight size={17} /></a>
-      </section>,
+      </section>
 
       <section id="experience" className="section container">
-        <ConversationTurn question="Where have you worked?" label="Experience" />
-        <SectionHeading number="02" label="Experience" title="Where I’ve worked.">Most of my work has been on APIs, data, and the tools people use around them.</SectionHeading>
+        <SectionHeading title="Where I’ve worked.">Most of my work has been on APIs, data, and the tools people use around them.</SectionHeading>
         <div className="timeline">{experience.map((job, index) => <article className="experience-row" key={job.company}><div className="experience-date"><span className={index === 0 ? 'timeline-dot current' : 'timeline-dot'} />{job.period}<span>{job.location}</span></div><div className={`experience-content${job.presentation ? ' has-presentation' : ''}`}><div className="job-heading"><div><h3>{job.company}</h3><p>{job.role}</p></div><span className="job-type">{job.type}</span></div><ul>{job.highlights.map(item => <li key={item}>{item}</li>)}</ul><div className="tags">{job.tech.map(t => <span key={t}>{t}</span>)}</div>{job.presentation && <a className="experience-presentation" href={`${import.meta.env.BASE_URL}${job.presentation}`} target="_blank" rel="noopener noreferrer" aria-label={`View ${job.company} final presentation (PDF, opens in a new tab)`}>
           <img className="presentation-preview" src={`${import.meta.env.BASE_URL}${job.presentationPreview}`} alt={`${job.company} final presentation title slide`} loading="lazy" />
           <div className="presentation-heading"><span>Final presentation</span><span className="presentation-action">View PDF <ArrowUpRight size={14} /></span></div>
         </a>}</div></article>)}</div>
-      </section>,
+      </section>
 
       <section id="about" className="section container">
-        <ConversationTurn question="Tell me a little more about yourself." label="About me & my toolkit" />
-        <SectionHeading number="03" label="A little about me" title="A bit about me.">I studied computer science at the University of San Francisco. Here’s a bit more about me.</SectionHeading>
+        <SectionHeading title="A bit about me.">I studied computer science at the University of San Francisco. Here’s a bit more about me.</SectionHeading>
         <div className="about-grid"><div className="about-copy"><h3>A collector who writes code.</h3><p>{personalInfo.bio}</p><p>Outside of coding, I’m usually interested in action figures or trading card games. ALFV and the One Piece deck builder came out of those interests.</p><div className="education"><span className="eyebrow">Education</span><h4>{education.institution}</h4><p>{education.degree}</p><span>{education.graduation} · GPA {education.gpa}</span></div></div><div className="skills-list">{technicalSkills.map(group => <div className="skill-group" key={group.category}><h3>{group.category}</h3><p>{group.skills.join(' · ')}</p></div>)}</div></div>
-      </section>,
+      </section>
 
-      <section id="contact" className="contact-section container"><ConversationTurn question="How can I get in touch?" label="Let’s talk" /><p className="eyebrow"><span className="status-dot" /> Let’s connect</p><h2>Say hello<span>.</span></h2><div className="contact-bottom"><p>Looking for a software engineer?<br />I’d be happy to talk.</p><div className="email-actions"><a href={`mailto:${personalInfo.email}`}>{personalInfo.email} <ArrowUpRight size={23} /></a><button type="button" onClick={copyEmail} aria-label="Copy email address">{copyStatus === 'Email copied' ? <Check size={18} /> : <Copy size={18} />}</button></div></div><p className="copy-status" role="status">{copyStatus}</p></section>,
-      ]} />
+      <section id="contact" className="contact-section container"><p className="eyebrow"><span className="status-dot" /> Let’s connect</p><h2>Say hello<span>.</span></h2><div className="contact-bottom"><p>Looking for a software engineer?<br />I’d be happy to talk.</p><div className="email-actions"><a href={`mailto:${personalInfo.email}`}>{personalInfo.email} <ArrowUpRight size={23} /></a><button type="button" onClick={copyEmail} aria-label="Copy email address">{copyStatus === 'Email copied' ? <Check size={18} /> : <Copy size={18} />}</button></div></div><p className="copy-status" role="status">{copyStatus}</p></section>
     </main>
     <footer className="container footer"><span>© {new Date().getFullYear()} {personalInfo.name}</span><span>San Francisco, CA</span><a href="#top">Back to top <ArrowRight size={14} className="back-arrow" /></a></footer>
     </div>
