@@ -51,11 +51,11 @@ export const experience = [
     type: "Co-op",
     description: "Built scalable geospatial ingestion pipelines and asynchronous services for a real-time event discovery platform.",
     highlights: [
-      "Built a geospatial event-ingestion pipeline using AWS Lambda and concurrent processing, reducing event-discovery latency.",
+      "Built a geospatial event-ingestion pipeline using AWS and concurrent processing, reducing event-discovery latency.",
       "Developed a schedule-synchronization service connecting Google Calendar with a PostgreSQL backend through asynchronous event processing.",
       "Collaborated with engineers, founders, and product stakeholders to break down requirements, debug cross-service issues, and deliver features through weekly sprints."
     ],
-    tech: ["AWS Lambda", "Python", "PostgreSQL", "Concurrency", "Google Calendar API", "Docker"]
+    tech: ["AWS", "Python", "PostgreSQL", "Concurrency", "Google Calendar API", "Docker"]
   },
   {
     role: "Software Engineer Intern",
@@ -169,7 +169,7 @@ export const projects = [
 export const technicalSkills = [
   {
     category: "Languages",
-    skills: ["TypeScript / JavaScript", "Python", "Go", "SQL", "C"]
+    skills: ["TypeScript / JavaScript", "Python", "Go", "SQL", "C", "PHP"]
   },
   {
     category: "Frontend",
@@ -177,10 +177,10 @@ export const technicalSkills = [
   },
   {
     category: "Backend & Data",
-    skills: ["Node.js", "FastAPI", "REST APIs", "PostgreSQL", "Prisma", "SQLAlchemy", "MongoDB"]
+    skills: ["Node.js", "FastAPI", "Laravel", "REST APIs", "PostgreSQL", "Prisma", "SQLAlchemy", "MongoDB"]
   },
   {
     category: "Infrastructure & Tools",
-    skills: ["AWS Lambda", "Docker", "GitHub Actions", "CI / CD", "Supabase", "Vercel", "Git"]
+    skills: ["AWS", "Docker", "GitHub Actions", "CI / CD", "Supabase", "Vercel", "Git"]
   }
 ];
