@@ -21,15 +21,22 @@ function SectionHeading({ title, children }) {
 
 export default function App() {
   const [activeSection, setActiveSection] = useState(getSection);
-  const contentRef = useRef(null);
   useEffect(() => {
-    const syncSection = () => setActiveSection(getSection());
-    window.addEventListener('hashchange', syncSection);
-    return () => window.removeEventListener('hashchange', syncSection);
+    const updateActiveSection = () => {
+      let current = 'top';
+      for (const [id] of navigation) {
+        if (document.getElementById(id)?.getBoundingClientRect().top <= 140) current = id;
+      }
+      setActiveSection(current);
+    };
+    updateActiveSection();
+    window.addEventListener('scroll', updateActiveSection, { passive: true });
+    window.addEventListener('resize', updateActiveSection);
+    return () => {
+      window.removeEventListener('scroll', updateActiveSection);
+      window.removeEventListener('resize', updateActiveSection);
+    };
   }, []);
-  useEffect(() => {
-    contentRef.current?.scrollTo({ top: 0 });
-  }, [activeSection]);
   const [copyStatus, setCopyStatus] = useState('');
   const copyTimer = useRef(null);
   useEffect(() => () => clearTimeout(copyTimer.current), []);
@@ -55,9 +62,9 @@ export default function App() {
       </nav>
       <div className="sidebar-bottom"><p>{personalInfo.location}</p><div className="sidebar-socials"><a href={personalInfo.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub"><GithubIcon className="icon" /></a><a href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><LinkedinIcon className="icon" /></a><a href={`mailto:${personalInfo.email}`} aria-label="Email Sid"><Mail size={17} /></a></div></div>
     </aside>
-    <main id="main" className="workspace-content" ref={contentRef} tabIndex={-1}>
+    <main id="main" className="workspace-content" tabIndex={-1}>
 
-      <section id="top" className="hero container" hidden={activeSection !== 'top'} aria-labelledby="hero-title">
+      <section id="top" className="hero container" aria-labelledby="hero-title">
         <p className="eyebrow">Software engineer · San Francisco</p>
         <h1 id="hero-title" className="hero-title">Siddhartha<br /><em>(Sid) Shakya.</em></h1>
         <p className="hero-lead">Software engineer.</p>
@@ -66,7 +73,7 @@ export default function App() {
         <div className="overview-tools"><span>Tools I work with</span><div className="tags">{['TypeScript', 'React', 'Python', 'PostgreSQL', 'AWS'].map(name => <TechTag key={name} name={name} />)}</div></div>
       </section>
 
-      <section id="work" hidden={activeSection !== 'work'} className="section container">
+      <section id="work" className="section container">
         <SectionHeading title="Selected projects.">Applications, backend systems, and contributions to open-source software.</SectionHeading>
         <article className="featured-project"><span className="project-stamp">01 / Featured project</span>
           <div className="featured-visual" aria-label="ALFV Collections project metrics">
@@ -78,13 +85,13 @@ export default function App() {
           <div className="featured-copy"><p className="eyebrow">Full-stack application</p><h3>{featured.title}</h3><p>A production application combining account management, search, saved items, and a market valuation engine.</p><p className="project-detail">The pricing uses 10,000+ scraped sales, with more weight on recent sales and less on unusually high or low prices.</p><div className="tags">{featured.tech.map(t => <TechTag key={t} name={t} />)}</div><ProjectLinks project={featured} /></div>
         </article>
         <div className="project-grid">{projects.slice(1).map((project, index) => <article className={`project-card project-${project.id}`} key={project.id}>
-          {project.image ? <div className="project-image"><img src={`${import.meta.env.BASE_URL}${project.image}`} alt={`${project.title} application interface`} loading="lazy" /></div> : <div className="project-type-visual" aria-hidden="true"><span>{project.id === 'opensupplyhub' ? '{ open source }' : '> search_index.go'}</span><span>{project.id === 'opensupplyhub' ? 'React · error handling · tests' : 'Go · SQLite · goroutines'}</span></div>}
+          {project.image ? <a className="project-image" href={project.demo || project.github} target="_blank" rel="noopener noreferrer" aria-label={`Open ${project.title} (opens in a new tab)`}><img src={`${import.meta.env.BASE_URL}${project.image}`} alt={`${project.title} application interface`} loading="lazy" /></a> : <div className="project-type-visual" aria-hidden="true"><span>{project.id === 'opensupplyhub' ? '{ open source }' : '> search_index.go'}</span><span>{project.id === 'opensupplyhub' ? 'React · error handling · tests' : 'Go · SQLite · goroutines'}</span></div>}
           <div className="project-body"><div className="project-meta"><span>{project.tag}</span><span>No. {String(index + 2).padStart(2, '0')}</span></div><h3>{project.title}</h3><p>{project.summary}</p><div className="tags">{project.tech.slice(0, 4).map(t => <TechTag key={t} name={t} />)}</div><details><summary>Engineering details</summary><ul>{project.highlights.map(item => <li key={item}>{item}</li>)}</ul></details><ProjectLinks project={project} /></div>
         </article>)}</div>
         <a className="text-link all-work" href={personalInfo.github} target="_blank" rel="noopener noreferrer">Other projects on GitHub <ArrowUpRight size={17} /></a>
       </section>
 
-      <section id="experience" hidden={activeSection !== 'experience'} className="section container">
+      <section id="experience" className="section container">
         <SectionHeading title="Experience.">Most of my work has been on APIs, data, and the tools people use around them.</SectionHeading>
         <div className="timeline">{experience.map((job, index) => <article className="experience-row" key={job.company}><div className="experience-date"><span className={index === 0 ? 'timeline-dot current' : 'timeline-dot'} />{job.period}<span>{job.location}</span></div><div className={`experience-content${job.presentation ? ' has-presentation' : ''}`}><div className="job-heading"><div><h3>{job.company}</h3><p>{job.role}</p></div><span className="job-type">{job.type}</span></div><ul>{job.highlights.map(item => <li key={item}>{item}</li>)}</ul><div className="tags">{job.tech.map(t => <TechTag key={t} name={t} />)}</div>{job.presentation && <a className="experience-presentation" href={`${import.meta.env.BASE_URL}${job.presentation}`} target="_blank" rel="noopener noreferrer" aria-label={`View ${job.company} final presentation (PDF, opens in a new tab)`}>
           <img className="presentation-preview" src={`${import.meta.env.BASE_URL}${job.presentationPreview}`} alt={`${job.company} final presentation title slide`} loading="lazy" />
@@ -92,12 +99,12 @@ export default function App() {
         </a>}</div></article>)}</div>
       </section>
 
-      <section id="about" hidden={activeSection !== 'about'} className="section container">
+      <section id="about" className="section container">
         <SectionHeading title="About & skills.">I studied computer science at the University of San Francisco. Here’s a bit more about me.</SectionHeading>
         <div className="about-grid"><div className="about-copy"><h3>Building useful software.</h3><p>{personalInfo.bio}</p><p>My experience includes Python services, TypeScript applications, PostgreSQL data models, and integrations between external platforms.</p><div className="education"><span className="eyebrow">Education</span><h4>{education.institution}</h4><p>{education.degree}</p><span>{education.graduation} · GPA {education.gpa}</span></div></div><div className="skills-list">{technicalSkills.map(group => <div className="skill-group" key={group.category}><h3>{group.category}</h3><div className="skill-tools">{group.skills.map(skill => <TechTag key={skill} name={skill} />)}</div></div>)}</div></div>
       </section>
 
-      <section id="contact" hidden={activeSection !== 'contact'} className="contact-section container"><p className="eyebrow"><span className="status-dot" /> Let’s connect</p><h2>Get in touch.</h2><div className="contact-bottom"><p>Looking for a software engineer?<br />I’d be happy to talk.</p><div className="email-actions"><a href={`mailto:${personalInfo.email}`}>{personalInfo.email} <ArrowUpRight size={23} /></a><button type="button" onClick={copyEmail} aria-label="Copy email address">{copyStatus === 'Email copied' ? <Check size={18} /> : <Copy size={18} />}</button></div></div><p className="copy-status" role="status">{copyStatus}</p></section>
+      <section id="contact" className="contact-section container"><p className="eyebrow"><span className="status-dot" /> Let’s connect</p><h2>Get in touch.</h2><div className="contact-bottom"><p>Looking for a software engineer?<br />I’d be happy to talk.</p><div className="email-actions"><a href={`mailto:${personalInfo.email}`}>{personalInfo.email} <ArrowUpRight size={23} /></a><button type="button" onClick={copyEmail} aria-label="Copy email address">{copyStatus === 'Email copied' ? <Check size={18} /> : <Copy size={18} />}</button></div></div><p className="copy-status" role="status">{copyStatus}</p></section>
     <footer className="container footer"><span>© {new Date().getFullYear()} {personalInfo.name}</span><span>San Francisco, CA</span><a href="#top">Back to top <ArrowRight size={14} className="back-arrow" /></a></footer>
     </main>
     </div>

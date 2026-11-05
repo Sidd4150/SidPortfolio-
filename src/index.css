@@ -416,3 +416,18 @@ h2, .section-heading h2 { font: 500 29px/1.2 'DM Sans', sans-serif; letter-spaci
 .hero-title { letter-spacing: -.055em; }
 .hero-title em { font-weight: inherit; }
 .sidebar-navigation { font-family: 'DM Sans', sans-serif; }
+
+/* Scroll through the portfolio with persistent sidebar navigation. */
+html { scroll-behavior: smooth; scroll-padding-top: 35px; }
+.portfolio-page { height: auto; min-height: 100dvh; align-items: start; }
+.workspace-sidebar { position: sticky; top: 0; height: 100dvh; overflow-y: auto; }
+.workspace-content { overflow: visible; }
+.workspace-content > .section { padding-top: 85px; }
+.workspace-content > .contact-section { margin-top: 85px; }
+@media (max-width: 700px) {
+  .workspace-content > .section { padding-top: 55px; }
+  .workspace-content > .contact-section { margin-top: 55px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}

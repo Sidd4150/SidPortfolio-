@@ -116,16 +116,16 @@ export const projects = [
     subtitle: "Machine Learning Real Estate Valuation",
     category: "Machine Learning & Full Stack",
     tag: "ML & Analytics",
-    summary: "Estimates San Francisco rents from rental data, then calculates cash flow, cap rate, and ROI scenarios.",
+    summary: "Predicts San Francisco rents from property features and compares mortgage costs, operating expenses, cash flow, and rental returns.",
     description: "Trained on real San Francisco rental market data, this application utilizes a custom Gradient Boosting Regressor (GBR) to forecast fair rental prices across neighborhoods. Built-in financial models calculate capitalization rates, cash flow, and ROI scenarios for real estate investors in real time.",
     tech: ["Python", "Flask", "Scikit-Learn", "Pandas", "React", "Tailwind CSS", "Railway"],
     github: "https://github.com/Sidd4150/San-Francisco-rent-and-ROI-predictor",
     demo: "https://sf-rent-and-roi-predictor.up.railway.app/",
     image: "Rent_img.png",
     highlights: [
-      "Trained Gradient Boosting Regressor on comprehensive SF housing & rental data",
-      "Real-time financial analysis engine evaluating cap rate and projected cash flow",
-      "Interactive React UI backed by high-throughput Flask API deployed on Railway"
+      "Predicts monthly rent from bedrooms, bathrooms, square footage, and location using a Gradient Boosting Regressor",
+      "Calculates mortgage payments, operating expenses, gross rental yield, and cash-on-cash return from adjustable assumptions",
+      "React interface with a Flask prediction API, deployed on Railway"
     ]
   },
   {

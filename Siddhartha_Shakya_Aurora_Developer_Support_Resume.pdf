@@ -1,0 +1,109 @@
+%PDF-1.4
+%âãÏÓ
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents 6 0 R  /Annots [7 0 R 8 0 R 9 0 R 10 0 R] >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
+endobj
+6 0 obj
+<< /Length 5045 >>
+stream
+BT /F2 20 Tf 40 754.0 Td (Siddhartha \(Sid\) Shakya) Tj ET
+BT /F1 9.3 Tf 40 727.0 Td (San Francisco, CA | 415-572-0304 | sidushakya@gmail.com) Tj ET
+BT /F1 9.3 Tf 40 715.8 Td (LinkedIn | GitHub) Tj ET
+BT /F2 10 Tf 40 697.6 Td (SUMMARY) Tj ET
+0.75 G 0.4 w 40 690.4 m 572 690.4 l S 0 G
+BT /F1 9.3 Tf 40 681.4 Td (Computer science graduate with internship and co-op experience investigating application issues, building) Tj ET
+BT /F1 9.3 Tf 40 670.2 Td (Python services, and automating workflows. Hands-on experience with Git, GitHub Actions, Docker, AWS, and) Tj ET
+BT /F1 9.3 Tf 40 659.0 Td (PostgreSQL. Seeking to help engineering teams resolve technical blockers and reduce repetitive work as a) Tj ET
+BT /F1 9.3 Tf 40 647.8 Td (Developer Support Engineer at Aurora.) Tj ET
+BT /F2 10 Tf 40 629.6 Td (TECHNICAL SKILLS) Tj ET
+0.75 G 0.4 w 40 622.4 m 572 622.4 l S 0 G
+BT /F2 9.3 Tf 40 613.4 Td (Developer tools: Git, GitHub Actions, CI/CD, Docker, AWS, Vercel) Tj ET
+BT /F2 9.3 Tf 40 602.2 Td (Troubleshooting & testing: Cross-service debugging, error handling, request validation, regression testing) Tj ET
+BT /F2 9.3 Tf 40 591.0 Td (Integrations & automation: REST APIs, JSON, OAuth, Google Calendar API, n8n, OpenAI integrations) Tj ET
+BT /F2 9.3 Tf 40 579.8 Td (Data & reporting: SQL, PostgreSQL, MongoDB, operational dashboards, data modeling) Tj ET
+BT /F2 9.3 Tf 40 568.6 Td (Programming: Python, JavaScript, TypeScript, Go) Tj ET
+BT /F2 10 Tf 40 550.4 Td (EXPERIENCE) Tj ET
+0.75 G 0.4 w 40 543.2 m 572 543.2 l S 0 G
+BT /F2 9.3 Tf 40 534.2 Td (Himal Design — Contract Software Engineer | Remote) Tj ET
+BT /F1 9.3 Tf 40 523.0 Td (April 2026–July 2026) Tj ET
+BT /F1 9.3 Tf 40 509.8 Td (• Delivered an internal operations dashboard that consolidated Etsy, Amazon, and Faire listings, inventory) Tj ET
+BT /F1 9.3 Tf 40 498.6 Td (  counts, and active orders into one view.) Tj ET
+BT /F1 9.3 Tf 40 487.4 Td (• Organized order details and product images in a filterable interface, reducing manual marketplace lookups) Tj ET
+BT /F1 9.3 Tf 40 476.2 Td (  during packing and shipping.) Tj ET
+BT /F1 9.3 Tf 40 465.0 Td (• Implemented paginated data imports and Etsy OAuth authentication with token refresh to connect) Tj ET
+BT /F1 9.3 Tf 40 453.8 Td (  marketplace data with PostgreSQL.) Tj ET
+BT /F2 9.3 Tf 40 440.6 Td (SpotDrop — Software Engineer Co-op | San Francisco, CA) Tj ET
+BT /F1 9.3 Tf 40 429.4 Td (August 2025–December 2025) Tj ET
+BT /F1 9.3 Tf 40 416.2 Td (• Worked with engineers, founders, and product stakeholders to clarify requirements, investigate cross-) Tj ET
+BT /F1 9.3 Tf 40 405.0 Td (  service issues, and deliver updates in weekly sprints.) Tj ET
+BT /F1 9.3 Tf 40 393.8 Td (• Built asynchronous processing to synchronize Google Calendar schedules with PostgreSQL.) Tj ET
+BT /F1 9.3 Tf 40 382.6 Td (• Updated Laravel REST endpoints to support features in the application's map interface.) Tj ET
+BT /F2 9.3 Tf 40 369.4 Td (Dreamable — Software Engineer Intern | San Francisco, CA) Tj ET
+BT /F1 9.3 Tf 40 358.2 Td (May 2025–July 2025) Tj ET
+BT /F1 9.3 Tf 40 345.0 Td (• Built Python services using FastAPI, SQLAlchemy, Pydantic, and PostgreSQL to manage AI-generated workflow) Tj ET
+BT /F1 9.3 Tf 40 333.8 Td (  records.) Tj ET
+BT /F1 9.3 Tf 40 322.6 Td (• Implemented request validation and soft deletion to reject invalid inputs and preserve workflow records.) Tj ET
+BT /F1 9.3 Tf 40 311.4 Td (• Automated content summarization and Slack reporting using n8n and OpenAI integrations, reducing) Tj ET
+BT /F1 9.3 Tf 40 300.2 Td (  repetitive reporting work.) Tj ET
+BT /F2 10 Tf 40 282.0 Td (SELECTED PROJECTS & CONTRIBUTIONS) Tj ET
+0.75 G 0.4 w 40 274.8 m 572 274.8 l S 0 G
+BT /F2 9.3 Tf 40 265.8 Td (ALFV Collections — Deployed Web Application) Tj ET
+BT /F1 9.3 Tf 40 254.6 Td (Live application | Source code) Tj ET
+BT /F1 9.3 Tf 40 241.4 Td (• Launched a platform used by 50+ registered users to manage collections, save wishlist items, and view) Tj ET
+BT /F1 9.3 Tf 40 230.2 Td (  estimated portfolio values.) Tj ET
+BT /F1 9.3 Tf 40 219.0 Td (• Processed 10,000+ sales records to estimate values for 500+ collectibles, weighting recent transactions) Tj ET
+BT /F1 9.3 Tf 40 207.8 Td (  and reducing the influence of price outliers.) Tj ET
+BT /F2 9.3 Tf 40 194.6 Td (OpenSupplyHub — Open-Source Contributor | May 2026) Tj ET
+BT /F1 9.3 Tf 40 181.4 Td (• Fixed a React interface bug that prevented API error messages from appearing, making request failures) Tj ET
+BT /F1 9.3 Tf 40 170.2 Td (  visible to users.) Tj ET
+BT /F1 9.3 Tf 40 159.0 Td (• Added React Testing Library regression tests to verify error rendering and prevent the issue from) Tj ET
+BT /F1 9.3 Tf 40 147.8 Td (  recurring.) Tj ET
+BT /F2 10 Tf 40 129.6 Td (EDUCATION) Tj ET
+0.75 G 0.4 w 40 122.4 m 572 122.4 l S 0 G
+BT /F2 9.3 Tf 40 113.4 Td (University of San Francisco — B.S. in Computer Science) Tj ET
+BT /F1 9.3 Tf 40 102.2 Td (May 2026 | GPA: 3.7) Tj ET
+BT /F1 9.3 Tf 40 91.0 Td (Relevant coursework: Computer Networks, Data Structures and Algorithms) Tj ET
+endstream
+endobj
+7 0 obj
+<< /Type /Annot /Subtype /Link /Rect [40 713.8 78 725.8] /Border [0 0 0] /A << /S /URI /URI (https://www.linkedin.com/in/siddhartha-shakya3004) >> >>
+endobj
+8 0 obj
+<< /Type /Annot /Subtype /Link /Rect [83 713.8 120 725.8] /Border [0 0 0] /A << /S /URI /URI (https://github.com/Sidd4150) >> >>
+endobj
+9 0 obj
+<< /Type /Annot /Subtype /Link /Rect [40 252.59999999999957 110 264.59999999999957] /Border [0 0 0] /A << /S /URI /URI (https://alfvcollections.com) >> >>
+endobj
+10 0 obj
+<< /Type /Annot /Subtype /Link /Rect [113 252.59999999999957 180 264.59999999999957] /Border [0 0 0] /A << /S /URI /URI (https://github.com/Sidd4150/ALFV_collection) >> >>
+endobj
+xref
+0 11
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000121 00000 n 
+0000000293 00000 n 
+0000000390 00000 n 
+0000000492 00000 n 
+0000005589 00000 n 
+0000005754 00000 n 
+0000005898 00000 n 
+0000006068 00000 n 
+trailer
+<< /Size 11 /Root 1 0 R >>
+startxref
+6256
+%%EOF
